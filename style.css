@@ -1,0 +1,14 @@
+body {
+    background-color: #2c2c2c;
+    color: white
+}
+
+
+#search {
+    float: right;
+    margin-right: 100px;
+}
+
+#dashboard {
+    margin-left: 100px;
+}

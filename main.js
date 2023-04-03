@@ -1,7 +1,6 @@
 async function SearchData() {
 
         let input = document.getElementById('inp').value;
-        console.log(input)
 
     let response = await fetch("https://data.lemon.markets/v1/instruments?search=" + input, 
     {
@@ -10,7 +9,32 @@ async function SearchData() {
 
     let result = await response.json();
 
-    document.write(result.results[0].name);
+    let searchtitle = document.getElementById('searchtitle');
+    let searchname = document.getElementById('searchname');
+    let searchisin = document.getElementById('searchisin');
+
+    // Title
+    let title = searchtitle.innerHTML = (result.results[0].title);
+    // Name
+    let name =  searchname.innerHTML = (result.results[0].name);
+    // Isin
+    let isin = searchisin.innerHTML = (result.results[0].isin);
+
+
+    let addDashboardbtn = document.getElementById('addDashboard');
+
+    addDashboardbtn.addEventListener('click', function() {
+      let dashboardtitle = document.getElementById('dashboardtitle');
+      let dashboardname = document.getElementById('dashboardname');
+      let dashboardisin = document.getElementById('dashboardname');
+
+      dashboardtitle.innerText = title;
+      dashboardname.innerText = name;
+      dashboardisin.innerText = isin;
+
+      
+    })
+
 }
 
 SearchData();

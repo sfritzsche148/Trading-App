@@ -5,11 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="search">
         <input id="inp" type="name">
-        <button id="btn" onclick="TradingData()">Great</button>
+        <button id="btn" onclick="SearchData()">Suchen</button>
+
+        <div id="searchresults">
+            <h2 id="searchtitle">Title</h2>
+            <p id="searchname">Name</p>
+            <p id="searchisin">Isin</p>
+            <button id="addDashboard">Hinzufügen</button>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <h1>Dashboard</h1>
+
+        <div id="dasboardcontent">
+            <div id="assetcard">
+                <h2 id="dashboardtitle">Title</h2>
+                <p id="dashboardname">Name</p>
+                <p id="dashboardisin">Isin</p>
+            </div>
+        </div>
     </div>
 
     <script src="main.js"></script>
