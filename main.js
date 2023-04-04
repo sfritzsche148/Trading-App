@@ -10,19 +10,60 @@ async function SearchData() {
 
     let assetdataresult = await assetdataresponse.json();
 
+    let title = assetdataresult.results[0].title;
+
+    let name = assetdataresult.results[0].name;
+
+    let isin = assetdataresult.results[0].isin;
+
     let searchtitle = document.getElementById('searchtitle');
     let searchname = document.getElementById('searchname');
     let searchisin = document.getElementById('searchisin');
 
     // Title
-     let title = searchtitle.innerHTML = (assetdataresult.results[0].title);
+     searchtitle.innerHTML = title;
     // Name
-    let name = searchname.innerHTML = 'Name: ' + (assetdataresult.results[0].name);
+    searchname.innerHTML = 'Name: ' + name;
     // Isin
-    let isin = searchisin.innerHTML = 'Isin: ' + (assetdataresult.results[0].isin); 
+    searchisin.innerHTML = 'Isin: ' + isin 
 
-    // TODO Api Request für das Chart machen
+
+
+
+    
+    // Frühere Daten
+    let qoutesresp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=2023-02-02", 
+    {
+      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
+    })
+
+    let qoutesres = await qoutesresp.json();
+    console.log(qoutesres)
+
+      // Latest Qoutes
+    let latesqoutesresp = await fetch("https://data.lemon.markets/v1/quotes/latest?isin=" + isin,
+    {
+      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
+    })
+
+    let latesqoutesres = await latesqoutesresp.json();
+    console.log(latesqoutesres)
+
     // Chart
+    let myChartObject = document.getElementById('mychart');
+
+    // TODO Chartdaten ordentlich füllen
+    let chart = new Chart(myChartObject, {
+      type: 'line',
+      data: {
+        labels:[" ", " ", " ", " ", " ", " ", " ", " ", " "],
+        datasets: [{
+          label: "1",
+          data: [qoutesres.results[0].a, qoutesres.results[40].a, qoutesres.results[50].a,  qoutesres.results[60].a, qoutesres.results[70].a, qoutesres.results[80].a, qoutesres.results[90].a, qoutesres.results[99].a, latesqoutesres.results[0].a]
+        }]
+      }
+    })
+
 }
 
 SearchData();
@@ -35,7 +76,7 @@ async function Trading() {
     })    
     
     let accresult = await accresponse.json();
-    console.log(accresult);
+    //console.log(accresult);
 
     let greeting = document.getElementById('greeting');
 
