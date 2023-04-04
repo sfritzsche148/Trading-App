@@ -1,6 +1,7 @@
 async function SearchData() {
 
-        let input = document.getElementById('searchinp').value;
+    let input = document.getElementById('searchinp').value;
+
 
     let assetdataresponse = await fetch("https://data.lemon.markets/v1/instruments?search=" + input, 
     {
@@ -22,36 +23,23 @@ async function SearchData() {
 
     // TODO Api Request für das Chart machen
     // Chart
-
-    // TODO Bug beheben dass nur noch die letzte Suche hinzugefügt wird
-    
-    let addDashboardbtn = document.getElementById('addDashboard');
-
-    addDashboardbtn.addEventListener('click', function() {
-
-      let dashboardcontent = document.getElementById('dashboardcontent');
-
-      // Create Element for the Asset Title
-      let assettitle = document.createElement('h3');
-      
-      // Create Element for the Asset Name
-      let assetname = document.createElement('p');
-
-      // Create Element for the Asset Isin
-      let assetisin = document.createElement('p');
-
-
-      assettitle.innerText = title
-      assetname.innerText = name
-      assetisin.innerText = isin
-      
-
-      dashboardcontent.appendChild(assettitle);
-      dashboardcontent.appendChild(assetname);
-      dashboardcontent.appendChild(assetisin);
-      
-    })
-    
 }
 
 SearchData();
+
+  // TODO Dashboard Trade Postions
+async function Trading() {
+  let accresponse = await fetch("https://paper-trading.lemon.markets/v1/account",
+    {
+      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhyeEpYUE5xZDcyRzE3Y1MzQjAxbGhiRjRiIiwibW9kZSI6InBhcGVyIn0.0fNLKC_TE8TbYSDwIKtBtNRyZr5hXc8rDAwalEIHVDE' }
+    })    
+    
+    let accresult = await accresponse.json();
+    console.log(accresult);
+
+    let greeting = document.getElementById('greeting');
+
+    greeting.innerText = 'Hello ' + accresult.results.firstname
+}
+
+Trading();
