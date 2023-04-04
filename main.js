@@ -1,6 +1,6 @@
 async function SearchData() {
 
-        let input = document.getElementById('inp').value;
+        let input = document.getElementById('searchinp').value;
 
     let assetdataresponse = await fetch("https://data.lemon.markets/v1/instruments?search=" + input, 
     {
@@ -18,11 +18,10 @@ async function SearchData() {
     // Name
     let name = searchname.innerHTML = 'Name: ' + (assetdataresult.results[0].name);
     // Isin
-    let isin = searchisin.innerHTML = 'Isin: ' + (assetdataresult.results[0].isin);
+    let isin = searchisin.innerHTML = 'Isin: ' + (assetdataresult.results[0].isin); 
 
-
-    
-    
+    // TODO Api Request für das Chart machen
+    // Chart
 
     // TODO Bug beheben dass nur noch die letzte Suche hinzugefügt wird
     
@@ -30,16 +29,15 @@ async function SearchData() {
 
     addDashboardbtn.addEventListener('click', function() {
 
+      let dashboardcontent = document.getElementById('dashboardcontent');
 
-
-      let dashboard = document.getElementById('dashboard');
-
-      //let assetcard = document.createElement('div');
-
+      // Create Element for the Asset Title
       let assettitle = document.createElement('h3');
-
+      
+      // Create Element for the Asset Name
       let assetname = document.createElement('p');
 
+      // Create Element for the Asset Isin
       let assetisin = document.createElement('p');
 
 
@@ -48,11 +46,9 @@ async function SearchData() {
       assetisin.innerText = isin
       
 
-      //dashcontent.appendChild(assetcard);
-      dashboard.appendChild(assettitle);
-      dashboard.appendChild(assetname);
-      dashboard.appendChild(assetisin);
-      console.log(dashboard)
+      dashboardcontent.appendChild(assettitle);
+      dashboardcontent.appendChild(assetname);
+      dashboardcontent.appendChild(assetisin);
       
     })
     
