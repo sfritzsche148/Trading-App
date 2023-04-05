@@ -27,14 +27,29 @@ async function SearchData() {
   // Isin
   searchisin.innerHTML = 'Isin: ' + isin 
 
-  // Frühere Daten
-  let qoutesresp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=2023-04-04", 
+  // Data from Yesterday
+  let qoutesyesterdayresp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=2023-04-04", 
   {
     headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
   })
 
-  let qoutesres = await qoutesresp.json();
-  console.log(qoutesres)
+  let qoutesyesterdayres = await qoutesyesterdayresp.json();
+  //console.log(qoutesyesterdayres);
+
+  // The Data from the day before yesterday
+  let qoutesyesterday2resp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=2023-04-03", 
+  {
+    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
+  })
+  let qoutesyesterday2res = await qoutesyesterday2resp.json();
+  //console.log(qoutesyesterday2res);
+
+  let qoutesyesterday3resp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=2023-03-31", 
+  {
+    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
+  })
+  let qoutesyesterday3res = await qoutesyesterday3resp.json();
+  console.log(qoutesyesterday3res);
 
     // Latest Qoutes
   let latesqoutesresp = await fetch("https://data.lemon.markets/v1/quotes/latest?isin=" + isin,
@@ -44,7 +59,7 @@ async function SearchData() {
 
 
   let latesqoutesres = await latesqoutesresp.json();
-  console.log(latesqoutesres)
+  //console.log(latesqoutesres)
 
   // Chart
   let myChartObject = document.getElementById('mychart');
@@ -53,10 +68,10 @@ async function SearchData() {
   let chart = new Chart(myChartObject, {
     type: 'line',
     data: {
-      labels:[qoutesres.results[0].t,  qoutesres.results[40].t, qoutesres.results[50].t, qoutesres.results[60].t, qoutesres.results[70].t, qoutesres.results[80].t, qoutesres.results[90].t, qoutesres.results[99].t, latesqoutesres.results[0].t],
+      labels:[qoutesyesterday3res.results[0].t, qoutesyesterday2res.results[0].t, qoutesyesterdayres.results[0].t,  latesqoutesres.results[0].t],
       datasets: [{
         label: "1",
-        data: [qoutesres.results[0].a, qoutesres.results[40].a, qoutesres.results[50].a,  qoutesres.results[60].a, qoutesres.results[70].a, qoutesres.results[80].a, qoutesres.results[90].a, qoutesres.results[99].a, latesqoutesres.results[0].a]
+        data: [qoutesyesterday3res.results[0].a, qoutesyesterday2res.results[0].a,qoutesyesterdayres.results[0].a, latesqoutesres.results[0].a]
       }]
     }
   })
