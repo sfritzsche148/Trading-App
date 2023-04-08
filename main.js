@@ -32,11 +32,11 @@ async function SearchData() {
 
   const isodate3 = day3.toISOString();
 
-  let qoutesyesterday3resp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=" + isodate3, 
+  let qoutesyesterday2resp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=" + isodate3, 
   {
     headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
   })
-  let qoutesyesterday3res = await qoutesyesterday3resp.json();
+  let qoutesyesterday2res = await qoutesyesterday2resp.json();
  // console.log(qoutesyesterday3res);
 
 
@@ -45,25 +45,12 @@ async function SearchData() {
   const isodate2 = day2.toISOString();
 
    // The Data from the day before yesterday
-   let qoutesyesterday2resp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=" + isodate2, 
+   let qoutesyesterdayresp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=" + isodate2, 
    {
      headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
    })
-   let qoutesyesterday2res = await qoutesyesterday2resp.json();
+   let qoutesyesterdayres = await qoutesyesterdayresp.json();
    //console.log(qoutesyesterday2res);
-
-   let yesterday = new Date(Date.now() - 86400000); // that is: 24 * 60 * 60 * 1000
-
-   const isodate1 = yesterday.toISOString();
-
-  // Data from Yesterday
-  let qoutesyesterdayresp = await fetch("https://data.lemon.markets/v1/quotes?isin=" + isin + "&from=" + isodate1, 
-  {
-    headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsZW1vbi5tYXJrZXRzIiwiaXNzIjoibGVtb24ubWFya2V0cyIsInN1YiI6InVzcl9yeUdESDIyZmZzRjRHN0YxWXBZRjJid1pZZkJnOGdiTmRQIiwiZXhwIjoxNzExOTUwMjA2LCJpYXQiOjE2ODA0MTQyMDYsImp0aSI6ImFwa19yeUdESDIyaGhtR0Nac1ZIcmpISlhNMjl6bTZyUmJIRndwIiwibW9kZSI6InBhcGVyIn0.7UHPexMnI1sEnVk1f2Nirs7Sk5vejImbKqwv9d-zxiQ' }
-  })
-
-  let qoutesyesterdayres = await qoutesyesterdayresp.json();
-  //console.log(qoutesyesterdayres);
 
     // Latest Qoutes
   let latesqoutesresp = await fetch("https://data.lemon.markets/v1/quotes/latest?isin=" + isin ,
@@ -73,18 +60,11 @@ async function SearchData() {
 
 
   let latesqoutesres = await latesqoutesresp.json();
-  //console.log(latesqoutesres);
+  console.log(latesqoutesres);
 
   // Chart
   let myChartObject = document.getElementById('mychart').getContext('2d');
 
-  yesterday3time = qoutesyesterday3res.results[0].t;
-  yesterday2time = qoutesyesterday2res.results[0].t;
-  yesterdaytime = qoutesyesterdayres.results[0]?.t;
-  latestime = latesqoutesres.results[0].t;
-
-
-  yesterday3a = qoutesyesterday3res.results[0].a;
   yesterday2a = qoutesyesterday2res.results[0].a;
   yesterdaya = qoutesyesterdayres.results[0].a;
   latesta = latesqoutesres.results[0].a; 
@@ -93,11 +73,11 @@ async function SearchData() {
   let chart = new Chart(myChartObject, {
     type: 'line',
     data: {
-    labels:[yesterday3time, yesterday2time, yesterdaytime, latestime],
+    labels:["Day before yesterday", "Yesterday", "Today"],
       datasets: [{
         label: "1",
         backgroundColor: 'blue',
-        data: [yesterday3a, yesterday2a, yesterdaya, latesta]
+        data: [yesterdaya, yesterdaya, latesta]
       }]
     }
   })
@@ -116,13 +96,13 @@ async function SearchData() {
     chartcontainer.appendChild(myChartObject);
 
     // TODO FIX COLOR BUG   
-    if (latesqoutesres.results[0]?.a < qoutesyesterdayres.results[0]?.a) {
+    if (latesta < yesterday2a) {
       console.log('lower');
-      //chart.data.datasets[0].backgroundColor[0] = 'red';
+      chart.data.datasets[0].backgroundColor[0] = 'red';
 
-    } else if (latesqoutesres.results[0]?.a >= qoutesyesterdayres.results[0]?.a) {
+    } else if (latesta >= yesterday2a) {
       console.log('higher')
-     //chart.data.datasets[0].backgroundColor[0] = 'green';
+     chart.data.datasets[0].backgroundColor[0] = 'green';
 
     }
     
