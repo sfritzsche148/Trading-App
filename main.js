@@ -63,7 +63,7 @@ async function SearchData() {
   })
 
   let qoutesyesterdayres = await qoutesyesterdayresp.json();
-  console.log(qoutesyesterdayres);
+  //console.log(qoutesyesterdayres);
 
     // Latest Qoutes
   let latesqoutesresp = await fetch("https://data.lemon.markets/v1/quotes/latest?isin=" + isin ,
@@ -73,24 +73,31 @@ async function SearchData() {
 
 
   let latesqoutesres = await latesqoutesresp.json();
-  console.log(latesqoutesres)
-
- 
-
+  //console.log(latesqoutesres);
 
   // Chart
   let myChartObject = document.getElementById('mychart').getContext('2d');
 
+  yesterday3time = qoutesyesterday3res.results[0].t;
+  yesterday2time = qoutesyesterday2res.results[0].t;
+  yesterdaytime = qoutesyesterdayres.results[0]?.t;
+  latestime = latesqoutesres.results[0].t;
+
+
+  yesterday3a = qoutesyesterday3res.results[0].a;
+  yesterday2a = qoutesyesterday2res.results[0].a;
+  yesterdaya = qoutesyesterdayres.results[0].a;
+  latesta = latesqoutesres.results[0].a; 
 
   // TODO Chartdaten ordentlich füllen
   let chart = new Chart(myChartObject, {
     type: 'line',
     data: {
-      labels:[qoutesyesterday3res.results[0].t, qoutesyesterday2res.results[0].t, qoutesyesterdayres.results[0].t,  latesqoutesres.results[0].t],
+    labels:[yesterday3time, yesterday2time, yesterdaytime, latestime],
       datasets: [{
         label: "1",
         backgroundColor: 'blue',
-        data: [qoutesyesterday3res.results[0].a, qoutesyesterday2res.results[0].a,qoutesyesterdayres.results[0].a, latesqoutesres.results[0].a]
+        data: [yesterday3a, yesterday2a, yesterdaya, latesta]
       }]
     }
   })
@@ -108,18 +115,17 @@ async function SearchData() {
     let chartcontainer = document.getElementById('chartcont');
     chartcontainer.appendChild(myChartObject);
 
-
-    
     // TODO FIX COLOR BUG   
-    if (latesqoutesres.results[0].a < qoutesyesterdayres.results[0].a) {
+    if (latesqoutesres.results[0]?.a < qoutesyesterdayres.results[0]?.a) {
       console.log('lower');
       //chart.data.datasets[0].backgroundColor[0] = 'red';
 
-    } else if (latesqoutesres.results[0].a >= qoutesyesterdayres.results[0].a) {
+    } else if (latesqoutesres.results[0]?.a >= qoutesyesterdayres.results[0]?.a) {
       console.log('higher')
-      //chart.data.datasets[0].backgroundColor[0] = 'green';
+     //chart.data.datasets[0].backgroundColor[0] = 'green';
 
     }
+    
     
   })
 }
